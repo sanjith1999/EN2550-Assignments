@@ -2,7 +2,8 @@
 import cv2 as cv
 import matplotlib.pyplot as plt
 
-def show_images(images, n_rows=1,size=5):
+
+def show_images(images, n_rows=1, size=5):
     '''
     Showing Images using Matplotlib
     -----------------------------------
@@ -16,63 +17,62 @@ def show_images(images, n_rows=1,size=5):
     n_cols = int(n_images/n_rows)
     fig_size = (n_cols*size, n_rows*5)
 
-
     fig, ax = plt.subplots(n_rows, n_cols, figsize=fig_size)
 
     for i in range(n_images):
         # default image parameters
         color_im = True
         conversion = cv.COLOR_BGR2RGB
-        v_min=0
-        v_max=255
+        v_min = 0
+        v_max = 255
 
         # Specific Image Parameters
-        if len(images[i])>1: 
-            if images[i][1] == 'g': 
-                color_im=False
-            elif len(images[i][1])==2  : 
-                color_im=False
-                v_max=images[i][1][1]
-                v_min=images[i][1][0]
-            elif images[i][1] != 'c' :
-                conversion= images[i][1][0]
-        title=len(images[i])>2
-                
+        if len(images[i]) > 1:
+            if images[i][1] == 'g':
+                color_im = False
+            elif len(images[i][1]) == 2:
+                color_im = False
+                v_max = images[i][1][1]
+                v_min = images[i][1][0]
+            elif images[i][1] != 'c':
+                conversion = images[i][1][0]
+        title = len(images[i]) > 2
 
         # Displaying One Image
         if (n_cols == 1 and n_rows == 1):
-            if color_im :
+            if color_im:
                 ax.imshow(cv.cvtColor(images[i][0], conversion))
             else:
                 ax.imshow(images[i][0], cmap='gray', vmin=v_min, vmax=v_max)
             ax.set_xticks([])
             ax.set_yticks([])
             if title:
-                ax.set_title(images[i][2],color='blue',fontsize=20)
+                ax.set_title(images[i][2], color='red', fontsize=20)
 
         # Displaying Multiple Image in Same Row
         elif(n_rows == 1):
-            if color_im :
+            if color_im:
                 ax[i].imshow(cv.cvtColor(images[i][0], conversion))
             else:
                 ax[i].imshow(images[i][0], cmap='gray', vmin=v_min, vmax=v_max)
             ax[i].set_xticks([])
             ax[i].set_yticks([])
             if title:
-                ax[i].set_title(images[i][2],color='blue',fontsize=20)
+                ax[i].set_title(images[i][2], color='red', fontsize=20)
 
         # Displaying Images in Multiple Row
         else:
-            if color_im :
-                ax[i//n_cols][i % n_cols].imshow(cv.cvtColor(images[i][0], conversion))
+            if color_im:
+                ax[i//n_cols][i %
+                              n_cols].imshow(cv.cvtColor(images[i][0], conversion))
             else:
-                ax[i//n_cols][i % n_cols].imshow(images[i][0], cmap='gray', vmin=v_min, vmax=v_max)
+                ax[i//n_cols][i %
+                              n_cols].imshow(images[i][0], cmap='gray', vmin=v_min, vmax=v_max)
             ax[i//n_cols][i % n_cols].set_xticks([])
             ax[i//n_cols][i % n_cols].set_yticks([])
             if title:
-                ax[i//n_cols][i % n_cols].set_title(images[i][2],color='blue',fontsize=20)
+                ax[i//n_cols][i %
+                              n_cols].set_title(images[i][2], color='red', fontsize=20)
 
     plt.show()
     return
-
-
