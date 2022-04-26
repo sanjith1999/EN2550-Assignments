@@ -2,14 +2,17 @@ import matplotlib.pyplot as plt
 import cv2 as cv
 
 
-def visualize_points(points_list, legends=[], symbol=[], fig_size=(10, 10), grid=False, title=None):
-    """ Visualizing List of Points
+def visualize_points_and_circle(points_list=[], circles_list=[], legends=[], symbol=[], fig_size=(10, 10), grid=False, title=[], x_lim=[], y_lim=[]):
+    """ Visualizing List of Points and Circles
     :param points_list: list of points
+    :param circles_list: list of circles [(center_x,center_y,radius,threshold(optional))]
     :param legends: List of legends
     :param symbol: list of symbols
     :param fig_size: size of the output image ((10,10) by default)
     :param grid: Whether to use grids
     :param title: Setting Title to the plot
+    :param x_lim: specifying x_lim (optional)
+    :param y_lim: Specifying y_lim (optional)
     :return: void
     """
 
@@ -27,6 +30,17 @@ def visualize_points(points_list, legends=[], symbol=[], fig_size=(10, 10), grid
     for i, points in enumerate(points_list):
         plt.plot(points[:, 0], points[:, 1], symbol[i], label=legends[i])
 
+    for circle in circles_list:
+        [center_x, center_y, radius] = circle[:3]
+        draw_circle = plt.Circle((center_x, center_y), radius, fill=False, edgecolor='green', linewidth=2)
+        ax.add_artist(draw_circle)
+        if len(circle) > 3 and circle[3] < radius:
+            threshold = circle[3]
+            draw_inner = plt.Circle((center_x, center_y), radius - threshold, fill=False, edgecolor='green', linewidth=0.5, linestyle='--')
+            draw_outer = plt.Circle((center_x, center_y), radius + threshold, fill=False, edgecolor='green', linewidth=0.5, linestyle='--')
+            ax.add_artist(draw_inner)
+            ax.add_artist(draw_outer)
+
     # verbose
     if legend_available:
         plt.legend()
@@ -34,8 +48,12 @@ def visualize_points(points_list, legends=[], symbol=[], fig_size=(10, 10), grid
         plt.grid()
     if title:
         plt.title(title)
-
-    return
+    if x_lim:
+        plt.xlim(x_lim)
+    if y_lim:
+        plt.ylim(y_lim)
+    plt.tight_layout()
+    plt.show()
 
 
 def show_images(images, n_rows=1, size=5):
