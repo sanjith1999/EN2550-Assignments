@@ -5,8 +5,8 @@ import cv2 as cv
 def visualize_points_and_circle(points_list=[], circles_list=[], legends=[], symbol=[], fig_size=(10, 10), grid=False, title=[], x_lim=[], y_lim=[]):
     """ Visualizing List of Points and Circles
     :param points_list: list of points
-    :param circles_list: list of circles [(center_x,center_y,radius,threshold(optional))]
-    :param legends: List of legends
+    :param circles_list: list of circles [circle,edge_color(optional),threshold(optional))]
+    :param legends: List of legends[points legends, circle legends]
     :param symbol: list of symbols
     :param fig_size: size of the output image ((10,10) by default)
     :param grid: Whether to use grids
@@ -22,22 +22,31 @@ def visualize_points_and_circle(points_list=[], circles_list=[], legends=[], sym
         symbol = ['.' for i in range(len(points_list))]
     if not legends:
         legend_available = False
-        legends = ['' for i in range(len(points_list))]
+        legends = [['' for i in range(len(points_list))], ['' for i in range(len(circles_list))]]
 
     plt.figure(figsize=fig_size)
     ax = plt.gca()
     ax.set_aspect('equal')
     for i, points in enumerate(points_list):
-        plt.plot(points[:, 0], points[:, 1], symbol[i], label=legends[i])
+        plt.plot(points[:, 0], points[:, 1], symbol[i], label=legends[0][i])
 
-    for circle in circles_list:
-        [center_x, center_y, radius] = circle[:3]
-        draw_circle = plt.Circle((center_x, center_y), radius, fill=False, edgecolor='green', linewidth=2)
+    for i, circle in enumerate(circles_list):
+        circ = circle[0]
+
+        # Looking for edge_color
+        if len(circle) > 1 and len(circle[1]):
+            edge_color = circle[1]
+        else:
+            edge_color = 'green'
+
+        draw_circle = plt.Circle((circ.X, circ.Y), circ.R, fill=False, edgecolor=edge_color, linewidth=2, label=legends[1][i])
         ax.add_artist(draw_circle)
-        if len(circle) > 3 and circle[3] < radius:
-            threshold = circle[3]
-            draw_inner = plt.Circle((center_x, center_y), radius - threshold, fill=False, edgecolor='green', linewidth=0.5, linestyle='--')
-            draw_outer = plt.Circle((center_x, center_y), radius + threshold, fill=False, edgecolor='green', linewidth=0.5, linestyle='--')
+
+        # Looking for threshold values
+        if len(circle) > 2 and circle[2] < circ.R:
+            threshold = circle[2]
+            draw_inner = plt.Circle((circ.X, circ.Y), circ.R - threshold, fill=False, edgecolor=edge_color, linewidth=0.2, linestyle='--')
+            draw_outer = plt.Circle((circ.X, circ.Y), circ.R + threshold, fill=False, edgecolor=edge_color, linewidth=0.2, linestyle='--')
             ax.add_artist(draw_inner)
             ax.add_artist(draw_outer)
 
@@ -52,7 +61,12 @@ def visualize_points_and_circle(points_list=[], circles_list=[], legends=[], sym
         plt.xlim(x_lim)
     if y_lim:
         plt.ylim(y_lim)
+    ax.spines['right'].set_visible(False)
+    ax.spines['left'].set_visible(False)
+    ax.spines['top'].set_visible(False)
+    ax.spines['bottom'].set_visible(False)
     plt.tight_layout()
+
     plt.show()
 
 

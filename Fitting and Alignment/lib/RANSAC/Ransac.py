@@ -10,7 +10,7 @@ class Ransac:
     def __init__(self, samples: [[float, float]], threshold: float):
         self.samples: [[float, float]] = samples
         self.threshold: float = threshold
-        self.best_model, self.iteration_done, self.inlier_count = self.fit_circle(self.samples, self.threshold)
+        self.best_model, self.model_points, self.iteration_done, self.inlier_count = self.fit_circle(self.samples, self.threshold)
         pass
 
     def __str__(self):
@@ -24,7 +24,7 @@ class Ransac:
         Fitting Circle Using RANSAC Algorithm
         :param data: data_points
         :param threshold: Typical value is 1.96\sigma
-        :return: best circular model , Number of iterations done, Number of samples, Inlier count for the best model
+        :return: best circular model ,model points, Number of iterations done, Number of samples, Inlier count for the best model
         """
         num_iterations = math.inf
         iterations_done = 0
@@ -32,6 +32,7 @@ class Ransac:
 
         max_inlier_count = 0
         best_model = None
+        model_points = None
 
         prob_outlier = 0.5
         desired_prob = 0.95
@@ -47,6 +48,7 @@ class Ransac:
             if inlier_count > max_inlier_count:
                 max_inlier_count = inlier_count
                 best_model = estimated_circle
+                model_points = sample_points
 
                 prob_outlier = 1 - inlier_count / data_size
                 try:
@@ -55,14 +57,14 @@ class Ransac:
                     pass
             iterations_done = iterations_done + 1
 
-        return best_model, iterations_done, max_inlier_count
+        return best_model, model_points, iterations_done, max_inlier_count
 
     def get_model(self):
         """
         Getting Circle Model
-        :return: Circle(cls)
+        :return: Circle(cls),model points
         """
-        return self.best_model
+        return self.best_model, self.model_points
 
     def get_inliers_outliers(self):
         """
