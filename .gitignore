@@ -1,3 +1,5 @@
 Exercise 09\__pycache__
 *.pyc
 Learning
+.idea
+*.xml
