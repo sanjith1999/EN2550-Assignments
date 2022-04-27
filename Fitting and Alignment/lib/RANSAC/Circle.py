@@ -12,7 +12,7 @@ class Circle(object):
         pass
 
     def __str__(self):
-        display = ("(X=%f Y=%f) R=%f" % (self.X, self.Y, self.R))
+        display = ("(%f, %f) R=%f" % (self.X, self.Y, self.R))
         return display
 
     @classmethod

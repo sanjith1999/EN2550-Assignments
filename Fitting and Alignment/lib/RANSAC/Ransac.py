@@ -16,7 +16,6 @@ class Ransac:
         pass
 
     def __str__(self):
-        print("Model Parameters : \n", self.best_model)
         display = ("Number of Samples = %d \n Iterations Done = %d\n Inliers Count : %d" % (len(self.samples), self.iteration_done, self.inlier_count))
         return display
 
@@ -29,7 +28,8 @@ class Ransac:
         if self.model == 'circle':
             final_model = Circle.randy_bullock_fit(inliers)
         else:
-            final_model = []  # Homography.generate_homography(inliers)
+            final_model = Homography.generate_homography(inliers)
+        print("Final Model : \n", final_model)
         return self.best_model, final_model, self.model_points
 
     def get_inliers_outliers(self):

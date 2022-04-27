@@ -65,5 +65,5 @@ class Homography:
         p_i_2D = p_i_3D[:, :2] / normalizer
         pd_i_2D = m_coordinates[:, 1]
         distances = Circle.euclidean_distance([p_i_2D[:, 0], p_i_2D[:, 1]], [pd_i_2D[:, 0], pd_i_2D[:, 1]])
-        inliers = distances[distances < threshold]
+        inliers = m_coordinates[distances < threshold]
         return inliers
