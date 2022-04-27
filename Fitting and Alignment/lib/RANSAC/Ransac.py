@@ -28,7 +28,7 @@ class Ransac:
         if self.model == 'circle':
             final_model = Circle.randy_bullock_fit(inliers)
         else:
-            final_model = Homography.generate_homography(inliers)
+            final_model = Homography.calcHomography(inliers)
         print("Final Model : \n", final_model)
         return self.best_model, final_model, self.model_points
 
@@ -66,7 +66,7 @@ class Ransac:
         if model == 'circle':
             num_sample = 3
         else:
-            num_sample = 4
+            num_sample = 5
 
         while num_iterations > iterations_done:
             np.random.shuffle(data)
@@ -75,7 +75,7 @@ class Ransac:
                 estimated_model = Circle.GenerateModelFrom3Points(sample_points)
                 inlier_count = Circle.inlier_counter(data, estimated_model, threshold)
             else:
-                estimated_model = Homography.generate_homography(sample_points)
+                estimated_model = Homography.calcHomography(sample_points)
                 inlier_count = Homography.inlier_counter(data, estimated_model, threshold)
 
             if inlier_count > max_inlier_count:

@@ -6,27 +6,65 @@ class Homography:
     """ Represents a Homography using the Homography matrix"""
 
     def __init__(self, H):
-        self.H = H
+        self.H = np.array(H)
 
     def __str__(self):
         display = ("%f\t%f\t%f \n%f\t%f\t%f \n%f\t%f\t%f" % (
             self.H[0][0], self.H[0][1], self.H[0][2], self.H[1][0], self.H[1][1], self.H[1][2], self.H[2][0], self.H[2][1], self.H[2][2]))
         return display
 
-    @classmethod
-    def generate_homography(cls, m_points):
-        data_size = m_points.shape[0]
-        p_i = np.hstack([m_points[:, 0], np.ones((m_points.shape[0], 1))])
-        pd_i = m_points[:, 1]
+    @staticmethod
+    def normalizePoints(points):
+        """
+        Normalizing the point cloud(pre-conditioning)
+        """
 
-        A = np.hstack([np.zeros((data_size, 3)), -p_i, pd_i[:, 0].reshape((data_size, 1)) * p_i, p_i, np.zeros((data_size, 3)), pd_i[:, 0].reshape((data_size, 1)) * p_i]).reshape(
-            (2 * data_size, 9))
-        U = A.T @ A
-        W, V = np.linalg.eig(U)
-        ev_corresponding_to_smallest_ev = V[:, np.argmin(W)]
+        centroid = sum(points) / len(points)
+        total_dist = sum(np.sqrt(np.sum(((points - centroid) ** 2), axis=1)))
+        avg_dist = total_dist / len(points)
+        scale = np.sqrt(2) / avg_dist
+        xt, yt = centroid
+        transform = np.array([[scale, 0, -xt * scale],
+                              [0, scale, -yt * scale],
+                              [0, 0, 1]])
+        points = np.concatenate((points, np.ones((len(points), 1))), axis=1)
 
-        h_trans = Homography(np.array(ev_corresponding_to_smallest_ev.reshape((3, 3))))
-        return h_trans
+        normalized_points = transform.dot(points.T).T
+        return transform, normalized_points
+
+    @staticmethod
+    def calcHomography(m_points):
+        """
+        The normalized DLT for 2D homographs.
+        """
+        p1, p2 = m_points[:, 0], m_points[:, 1]
+        # Normalizing the points using predefined function
+        T1, p1 = Homography.normalizePoints(p1)
+        T2, p2 = Homography.normalizePoints(p2)
+        # Initialising an array to keep the coefficient matrix
+        A = np.zeros((2 * len(p1), 9))
+        row = 0
+        # Filling rows of the matrix according to the expressions
+        for point1, point2 in zip(p1, p2):
+            # Coefficients of the current row
+            A[row, 3:6] = -point2[2] * point1
+            A[row, 6:9] = point2[1] * point1
+            # Coefficients of the next row
+            A[row + 1, 0:3] = point2[2] * point1
+            A[row + 1, 6:9] = -point2[0] * point1
+            row += 2
+        # Singular Value decomposition of A
+        U, D, VT = np.linalg.svd(A)
+        # unit singular vector corresponding to the smallest
+        # singular value, is the solution h. That is last column of V.
+        # i.e. Last row of the V^T
+        h = VT[-1]
+        # Reshaping to get 3x3 homography
+        H = h.reshape((3, 3))
+        # Renormalization
+        H = np.linalg.inv(T2).dot(H).dot(T1)
+        H = H / H[-1, -1]
+        return Homography(H)
 
     @staticmethod
     def inlier_counter(m_coordinates, transformation, threshold):
