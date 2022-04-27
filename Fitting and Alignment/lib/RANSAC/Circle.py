@@ -12,7 +12,7 @@ class Circle(object):
         pass
 
     def __str__(self):
-        display = ("X=%f Y=%f R=%f" % (self.X, self.Y, self.R))
+        display = ("(X=%f Y=%f) R=%f" % (self.X, self.Y, self.R))
         return display
 
     @classmethod
@@ -52,3 +52,46 @@ class Circle(object):
         c_x, c_y = u_c + x_bar, v_c + y_bar
         circ = Circle(c_x, c_y, r)
         return circ
+
+    @staticmethod
+    def euclidean_distance(point1, point2):
+        """
+        Calculating the distance between two points
+        :param point1: [x1,y1]
+        :param point2: [x2,y2]
+        :return: Distance between two points
+        """
+        squared = (point1[0] - point2[0]) ** 2 + (point1[0] - point2[1]) ** 2
+        r = squared ** 0.5
+        return r
+
+    @staticmethod
+    def inlier_counter(points, circle, threshold):
+        """
+        Calculating number of inliers lie at a given threshold
+        :param points: data set
+        :param circle: Circle Model
+        :param threshold:
+        :return: Count of Inliers
+        """
+        center_point = [circle.X, circle.Y]
+        radius = circle.R
+        distances = Circle.euclidean_distance(center_point, [points[:, 0], points[:, 1]])
+        count = np.count_nonzero(np.logical_and(radius - threshold < distances, distances < radius + threshold))
+        return count
+
+    @staticmethod
+    def inliers_outliers(points, circle, threshold):
+        """
+        Calculating Inliers and Outliers
+        :param points:
+        :param circle:
+        :param threshold:
+        :return:
+        """
+        center_point = [circle.X, circle.Y]
+        radius = circle.R
+        distances = Circle.euclidean_distance(center_point, [points[:, 0], points[:, 1]])
+        inliers = points[np.logical_and(radius - threshold < distances, distances < radius + threshold)]
+        outliers = points[np.logical_not(np.logical_and(radius - threshold < distances, distances < radius + threshold))]
+        return inliers, outliers
