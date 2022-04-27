@@ -25,7 +25,7 @@ class Homography:
         W, V = np.linalg.eig(U)
         ev_corresponding_to_smallest_ev = V[:, np.argmin(W)]
 
-        h_trans = Homography(ev_corresponding_to_smallest_ev.reshape((3, 3)))
+        h_trans = Homography(np.array(ev_corresponding_to_smallest_ev.reshape((3, 3))))
         return h_trans
 
     @staticmethod
