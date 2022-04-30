@@ -16,7 +16,8 @@ class Ransac:
         pass
 
     def __str__(self):
-        display = ("Number of Samples = %d \n Iterations Done = %d\n Inliers Count : %d" % (len(self.samples), self.iteration_done, self.inlier_count))
+        display = ("Number of Samples = %d \n Iterations Done = %d\n Inliers Count : %d" % (
+            len(self.samples), self.iteration_done, self.inlier_count))
         return display
 
     def get_model(self):
@@ -29,7 +30,6 @@ class Ransac:
             final_model = Circle.randy_bullock_fit(inliers)
         else:
             final_model = Homography.calcHomography(inliers)
-        print("Final Model : \n", final_model)
         return self.best_model, final_model, self.model_points
 
     def get_inliers_outliers(self):
@@ -38,18 +38,20 @@ class Ransac:
         :return: Points corresponding to inliers and outliers
         """
         if self.model == 'circle':
-            inliers, outliers = Circle.inliers_outliers(self.samples, self.best_model, self.threshold)
+            inliers, outliers = Circle.inliers_outliers(
+                self.samples, self.best_model, self.threshold)
         else:
-            inliers, outliers = Homography.inliers_outliers(self.samples, self.best_model, self.threshold), []
+            inliers, outliers = Homography.inliers_outliers(
+                self.samples, self.best_model, self.threshold), []
         return inliers, outliers
 
     @staticmethod
-    def fit_model(data, model='circle', threshold=0):
+    def fit_model(data, model='circle', threshold=0,min_iteration=0):
         """
         Fitting Circle Using RANSAC Algorithm
         :param data: data_points
         :param model: Which model to fit('circle' by default or homo)
-        :param threshold: Typical value is 1.96\sigma
+        :param threshold: Threshold
         :return: best model ,model points, Number of iterations done, Number of samples, Inlier count for the best model
         """
         num_iterations = math.inf
@@ -85,7 +87,9 @@ class Ransac:
 
                 prob_outlier = 1 - inlier_count / data_size
                 try:
-                    num_iterations = math.log(1 - desired_prob) / math.log(1 - (1 - prob_outlier) ** num_sample)
+                    num_iterations =  math.log(1 - desired_prob) / math.log(1 - (1 - prob_outlier) ** num_sample)
+                    if min_iteration>0 and num_iterations < min_iteration:
+                        num_iterations = min_iteration
                 except:
                     pass
             iterations_done = iterations_done + 1

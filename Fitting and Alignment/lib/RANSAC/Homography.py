@@ -6,7 +6,9 @@ class Homography:
     """ Represents a Homography using the Homography matrix"""
 
     def __init__(self, H):
-        self.H = np.array(H)
+        H_ = np.array(H)
+        H_ = H_.reshape((3, 3))
+        self.H = H_ / (H_[-1][-1])
 
     def __str__(self):
         display = ("%f\t%f\t%f \n%f\t%f\t%f \n%f\t%f\t%f" % (
@@ -63,7 +65,6 @@ class Homography:
         H = h.reshape((3, 3))
         # Renormalization
         H = np.linalg.inv(T2).dot(H).dot(T1)
-        H = H / H[-1, -1]
         return Homography(H)
 
     @staticmethod

@@ -3,3 +3,7 @@ Exercise 09\__pycache__
 Learning
 .idea
 *.xml
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
