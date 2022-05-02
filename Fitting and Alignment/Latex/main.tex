@@ -1,8 +1,23 @@
 \documentclass{article}
 
+\usepackage{./settings/preamble}
 
-\usepackage{pythonhighlight}
+
 
 \begin{document}
+\begin{center} 
+    {\Large \textbf{Fitting \& Alignment}}\\\vspace*{.1cm}
+    S.Sanjith : 190562G
+\end{center}
+\vspace*{-.2cm}
+\HRule
+\begin{abstract}
+    Despite the advancement in fitting approaches, RANSAC  is a good algorithm that can deal with higher outlier ratios up to 50\%.    In this report, we will talk about the implementation of RANSAC in two different situations. In the first part of the report we will fit a circle with given points. Then we analyze an application of finding homographic transformation between two images. Finally, we will try to generalize this approach to find homographic transformation used in stitching two images.
+\end{abstract}
+\section{Ransac Algorithm}
+\section{Fitting Circle}
+\import{sections/}{circle}
+\section{Super-Imposing Images}
+\section{Homography Calculation}
 
 \end{document}

@@ -7,3 +7,10 @@ Learning
 *.fdb_latexmk
 *.fls
 *.log
+*.sta
+*.synctex.gz
+*.toc
+*.iml
+*.xml
+*.dvi
+
