@@ -19,19 +19,18 @@ Following algorithm implements the \textbf{\textit{Normalized Direct Linear Tran
 		w\prime.x&w\prime.y&w\prime.1& 0& 0 &0 & -x\prime.x& -x\prime.y& -x\prime.1\\
 	\end{bmatrix}
 	\begin{bmatrix}
-		h_{11}\\
-		h_{12}\\
-		h_{13}\\
-		h_{21}\\
-        h_{22}\\
-        h_{23}\\
-		h_{31}\\
-        h_{32}\\
-        h_{33}
+		h^1\\
+		h^2\\
+		h^3
+	\end{bmatrix} =
+	A\cdot	\begin{bmatrix}
+		h^1\\
+		h^2\\
+		h^3
 	\end{bmatrix} = O
 \end{equation*}
 }
 
-We can obtain 5 pairs of such equations and they can be put into a single matrix to solve for the unknown  $h^j$s through \textbf{\textit{Singular Value Decomposition}} as described in the {\tt Algorithm 4.1, 4.2 } in the above mentioned reference book. Since this is a very basic algorithm, it is prone to error. We will discuss about the performance of this algorithm in the final part of this report.\\
-{\color{cyan} Python Implementation : Find Homography}
-\inputpython{sections/code_listing.py}{35}{60}
+We can obtain many pairs of such equations and they can be put into a single matrix to solve for the unknown  $h^j$s through \textbf{\textit{Singular Value Decomposition}} as described in the {\tt Algorithm 4.1, 4.2 } in the above mentioned reference book. Since this is a very basic algorithm, it is prone to error. We will discuss about the performance of this algorithm in the final part of this report.
+{\color{cyan} Python Implementation...}
+\inputpython{sections/code_listing.py}{19}{29}
