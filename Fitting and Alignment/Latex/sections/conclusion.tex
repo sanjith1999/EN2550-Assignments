@@ -1,6 +1,6 @@
 \section*{Scenario-I : Fitting Circle}
 \vspace*{-.2cm}
-The following figures(\ref{circ},\ref{line}) illustrate two circular models approximated for the points depicted by dots. With proper tuning of the threshold parameters of first model(\ref{circ},R=9.856 \& O$\equiv$[0.123,-0.156]) stays closer to the parameters of the circle used to create half of these noisy points(R=10 \& O$\equiv$[0,0]). The second model(\ref{line}) seems to depict the nature of noisy line used to create half the data points.
+The following figures(\ref{circ},\ref{line}) illustrate two circular models approximated for the points depicted by dots. With proper tuning of the threshold, parameters of first model(\ref{circ},R=9.856 \& O$\equiv$[0.123,-0.156]) stays closer to the parameters of the circle used to create half of these noisy points(R=10 \& O$\equiv$[0,0]). The second model(\ref{line}) seems to depict the nature of noisy line used to create half the data points.
 \begin{figure}[h]
     \begin{minipage}{.48\textwidth}
         \begin{center}
@@ -33,7 +33,7 @@ The following illustration shows the same stitching using the homography extract
     \end{center}
 \end{figure}
 \\
-Direct matching between two images doesn't seem to work due to the scarcity of good matching feature count. Hence it is decided to match adjacent figures(img1 \& img2, img2 \& img3....) which are having more than 1000 matches. And deriving the overall transformation by multiplying adjacent ones. Although a slight translation is visible inside the green bounding box the result can be believed as a tighter extraction for a basic implementation.
+Direct matching between the two images doesn't seem to work due to the scarcity of good matching feature count. Hence it is decided to match adjacent figures(img1 \& img2, img2 \& img3....) which are having more than 1000 matches. And deriving the overall transformation by multiplying adjacent ones. Although a slight translation is visible inside the green bounding box the result can be regarded as a tighter extraction for a basic implementation.
 $$H_{1\to5}=H_{4\to5}\cdot H_{3\to4}\cdot H_{2\to3}\cdot H_{1\to2}$$
 \vspace*{.2cm}
 \begin{minipage}{.48\textwidth}
@@ -63,6 +63,7 @@ $$H_{1\to5}=H_{4\to5}\cdot H_{3\to4}\cdot H_{2\to3}\cdot H_{1\to2}$$
     \item \href{https://programmer.group/panoramic-stitching-using-ransac-algorithm.html}{Panoramic stitching using RANSAC algorithm}
     \item \href{https://youtu.be/J1DwQzab6Jg}{Youtube playlist on Image Stitching}
 \end{enumerate}
+\vspace*{.8cm}
 \HRule
 \vspace*{-.2cm}
 \begin{center}
