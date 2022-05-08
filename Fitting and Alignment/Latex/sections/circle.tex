@@ -1,15 +1,8 @@
-\documentclass[class=article,crop=false]{standalone}
+\section{Fitting Circle}
+Any circle can be defined by a minimum of three points. That is a circle is fully defined if it is expected to go through three points. Hence it is not suitable to fit a circle accurately with a given number of points.  By defining the total euclidean distances as the measure of error, a better choice for the circular fit can be achieved. 
 
-\usepackage{pythonhighlight}
-\usepackage[a4paper,top=2cm,bottom=2cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
-\usepackage{graphicx}
-
-\graphicspath{\subfix{../figures/}}
-
-\begin{document}
+ 
 \subsection*{Randy Bullock}
-\inputpython{code_listing.py}{4}{18}
-\begin{center}
-    \includegraphics[width=.5\textwidth]{circle.png}
-\end{center}
-\end{document}
+Two famous approaches for the fitting circle are circular regression and randy bullock fit. With few implementations, it is observed that the randy bullock fit is doing better in the noisy environment. \\
+{\color{cyan} Python Implementation : Randy Bullock Fit}
+\inputpython{sections/code_listing.py}{16}{31}

@@ -2,15 +2,30 @@
 
 %% Including Packages
 \usepackage{import}
-\usepackage[a4paper,top=2cm,bottom=2cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage[a4paper,top=1.5cm,bottom=1.5cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
 \usepackage{graphicx}
 \usepackage{pythonhighlight}
 \usepackage{subfiles}
 \usepackage{caption}
+\usepackage[colorlinks = true,
+            linkcolor = blue,
+            urlcolor  = blue,
+            citecolor = blue,
+            anchorcolor = blue]{hyperref}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{sectsty}
+
 
 %% Including Paths
-\graphicspath{{./figures/},{\subfix{../figures/}}}
+\graphicspath{{./figures/},{\subfix{./figures/}}}
 
 
 %% Own Commands
 \newcommand{\HRule}{\rule{\linewidth}{0.05mm}}
+\definecolor{mBlue}{rgb}{0.1,0.1,0.75}
+
+
+%% Visual Modifications
+\sectionfont{\color{mBlue}} 
+\subsectionfont{\color{cyan}}

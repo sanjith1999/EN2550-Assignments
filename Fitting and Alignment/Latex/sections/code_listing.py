@@ -62,37 +62,30 @@ def calcHomography(m_points):
 
 # RANSAC Algorithm
  def fit_model(data, model, threshold=0,min_iteration=0):
-        """
-        Fitting Model Using RANSAC Algorithm
-        """
-        num_iterations,iterations_done = math.inf,0
-        max_inlier_count,best_model,model_points = 0,None,None
-        desired_prob,data_size = 0.95,len(data)
+    num_iterations,iterations_done = math.inf,0
+    max_inlier_count,best_model = 0,None
+    desired_prob,data_size = 0.95,len(data)
 
-        # Assigning model parameters
-        num_sample= 3 if model=='circle'  else 5
+    # Minimum number of sample requirement (circle -> 3 , Homography -> 5)
+    num_sample= 3 if model=='circle'  else 5
 
-        while num_iterations > iterations_done:
-            np.random.shuffle(data)
-            sample_points = data[:num_sample]
-            estimated_model = generate_model_from_points(sample_points)
+    while num_iterations > iterations_done:
+        np.random.shuffle(data)
+        sample_points = data[:num_sample]
+        estimated_model = generate_model_from_points(sample_points)
 
-            if inlier_count > max_inlier_count:
-                max_inlier_count = inlier_count
-                best_model = estimated_model
-                model_points = sample_points
-
-                prob_outlier = 1 - inlier_count / data_size
-                try:
-                    num_iterations =  math.log(1 - desired_prob) /
-                         math.log(1 - (1 - prob_outlier) ** num_sample)
-                    if min_iteration>0 and num_iterations < min_iteration:
-                        num_iterations = min_iteration
-                except:
-                    pass
-            iterations_done = iterations_done + 1
-
-        return best_model, model_points, iterations_done, max_inlier_count
+        if inlier_count > max_inlier_count:
+            max_inlier_count = inlier_count
+            best_model = estimated_model
+            prob_outlier = 1 - inlier_count / data_size
+            num_iterations =  log(1 - desired_prob) /log(1 - (1 - prob_outlier) ** num_sample)
+            
+            # Adjusting maximum iteration requirement according to maximum inlier count
+            if min_iteration>0 and num_iterations < min_iteration:
+                num_iterations = min_iteration
+        iterations_done = iterations_done + 1
+    final_model = generate_model_from_points(inliers)
+    return final_model
 
 
 # Extracting Co-ordinates of matching points using SIFT Operator

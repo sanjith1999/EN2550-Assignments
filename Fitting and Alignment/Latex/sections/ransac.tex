@@ -1,2 +1,22 @@
-Algorithm
-\inputpython{code_listing.py}{20}{52}
+\section{The RANSAC}
+\vspace*{-.2cm}
+Fitting a model in a set of noisy features leads to unacceptable models. In such cases, it is critical to differentiate between inliers and outliers. RANSAC is a strategy that could be adapted to find the best model fit even in noisy scenarios. The key idea of the approach is to let each point vote for all the models that are compatible with it. The model with the most votes is chosen as the best fit.
+\vspace*{-.2cm}
+\subsection*{Algorithm}
+\vspace*{-.2cm}
+\begin{enumerate}
+    \item Draw minimum number of points required to fit a model uniformly at random and fit model to the points.
+    \item Find the count of inliers to the model (points whose distance or residual w.r.t model is less than threshold)
+    \item If there are enough inliers, accept the model.
+    \item Perform this until the maximum iteration count required is reached.
+    \item Find the best model from the accepted models and refit using all the model points.
+\end{enumerate}
+\vspace*{-.4cm}
+\subsection*{Python Implementation}
+\vspace*{-.2cm}
+\inputpython{sections/code_listing.py}{64}{88}
+\vspace*{-.2cm}
+
+
+
+

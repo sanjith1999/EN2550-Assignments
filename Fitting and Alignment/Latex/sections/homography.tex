@@ -1,0 +1,37 @@
+\section{Homography Calculation}
+
+
+Following algorithm implements the \textbf{\textit{Normalized Direct Linear Transformation (DLT)}} method (described in the \textit{Multiple View Geometry in Computer Vision}(Second Edition), by \textit{Richard Hartley} and   \textit{Andrew Zisserman}), to find the homography matrix {\tt M}$_{3 \times 3}$ using 5 or more pairs of corresponding points. Let $x_i = [x , y, 1]$ and $x_i^\prime = [x\prime , y\prime, w\prime ] $  be two corresponding points in the given two images. Then the transformation is given by $x_i^\prime = Hx_i$. This equation can be represented by using the vector cross product as  $x_i^\prime \times Hx_i = 0$ sine both the components have the same direction even though they differ in magnitude. This equation can be further simplified  to obtain the following linearly independent  system of two equations corresponding to each pair of points. Where $h^j$ indicates the $j^{th}$ row of the Homography matrix and $j = {1,2,3}$.
+
+{\footnotesize
+\begin{equation*}
+	\begin{bmatrix}
+		0^\top & -w\prime x_i^\top & y\prime x_i^\top\\
+		w\prime x_i^\top	& 0^\top & -x\prime x_i^\top\\
+	\end{bmatrix} 
+	\begin{bmatrix}
+		h^1\\
+		h^2\\
+		h^3
+	\end{bmatrix} =
+	\begin{bmatrix}
+		0& 0 &0 & -w\prime.x&-w\prime.y&-w\prime.1& y\prime.x & y\prime.y& y\prime.1\\
+		w\prime.x&w\prime.y&w\prime.1& 0& 0 &0 & -x\prime.x& -x\prime.y& -x\prime.1\\
+	\end{bmatrix}
+	\begin{bmatrix}
+		h_{11}\\
+		h_{12}\\
+		h_{13}\\
+		h_{21}\\
+        h_{22}\\
+        h_{23}\\
+		h_{31}\\
+        h_{32}\\
+        h_{33}
+	\end{bmatrix} = O
+\end{equation*}
+}
+
+We can obtain 5 pairs of such equations and they can be put into a single matrix to solve for the unknown  $h^j$s through \textbf{\textit{Singular Value Decomposition}} as described in the {\tt Algorithm 4.1, 4.2 } in the above mentioned reference book. Since this is a very basic algorithm, it is prone to error. We will discuss about the performance of this algorithm in the final part of this report.\\
+{\color{cyan} Python Implementation : Find Homography}
+\inputpython{sections/code_listing.py}{35}{60}
